@@ -5,7 +5,7 @@ test('test', t => {
   t.plan(4);
 
   const options = {
-    basedir: __dirname + '/lambda',
+    dir: __dirname + '/lambda',
   };
 
   const event = {
