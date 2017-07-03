@@ -26,3 +26,25 @@ test('test', t => {
     t.equal(event.test, 'test');
   });
 });
+
+test('test options.moduleDir', t => {
+  t.plan(2);
+
+  const options = {
+    dir: __dirname,
+    moduleDir: __dirname + '/lambda',
+  };
+
+  const event = {
+    test: 'test',
+  };
+
+  const context = {
+  };
+
+  spawnLambda(options, event, context, (err, result) => {
+    t.error(err);
+
+    t.equal(typeof(result), 'object');
+  });
+});
