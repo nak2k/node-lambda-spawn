@@ -54,7 +54,7 @@ test('test options.babel', t => {
   t.plan(2);
 
   const options = {
-    dir: __dirname + '/lambda',
+    dir: __dirname + '/babel-lambda',
     babel: true,
   };
 
@@ -66,7 +66,8 @@ test('test options.babel', t => {
   };
 
   spawnLambda(options, event, context, (err, result) => {
-    t.equal(typeof(err), 'object');
-    t.equal(typeof(err.message), 'string');
+    t.error(err);
+
+    t.equal(typeof(result), 'object');
   });
 });

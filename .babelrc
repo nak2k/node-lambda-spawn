@@ -1,0 +1,10 @@
+// -*- mode: js -*-
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "6.10"
+      }
+    }]
+  ]
+}
