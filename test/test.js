@@ -49,7 +49,6 @@ test('test options.moduleDir', t => {
   });
 });
 
-
 test('test options.babel', t => {
   t.plan(2);
 
@@ -69,5 +68,29 @@ test('test options.babel', t => {
     t.error(err);
 
     t.equal(typeof(result), 'object');
+  });
+});
+
+test('test options.lambdaEnv', t => {
+  t.plan(2);
+
+  const options = {
+    dir: __dirname + '/lambda',
+    lambdaEnv: {
+      foo: 'bar',
+    },
+  };
+
+  const event = {
+    test: 'test',
+  };
+
+  const context = {
+  };
+
+  spawnLambda(options, event, context, (err, result) => {
+    t.error(err);
+
+    t.equal(result.env.foo, 'bar');
   });
 });
