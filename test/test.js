@@ -48,3 +48,25 @@ test('test options.moduleDir', t => {
     t.equal(typeof(result), 'object');
   });
 });
+
+
+test('test options.babel', t => {
+  t.plan(2);
+
+  const options = {
+    dir: __dirname + '/lambda',
+    babel: true,
+  };
+
+  const event = {
+    test: 'test',
+  };
+
+  const context = {
+  };
+
+  spawnLambda(options, event, context, (err, result) => {
+    t.equal(typeof(err), 'object');
+    t.equal(typeof(err.message), 'string');
+  });
+});

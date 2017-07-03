@@ -10,6 +10,7 @@
     "debug": "^2.6.8"
   },
   "devDependencies": {
+    "aws-sdk": "^2.80.0",
     "eslint": "^4.1.1",
     "tape": "^4.7.0"
   },
