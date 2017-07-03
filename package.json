@@ -1,6 +1,6 @@
 {
   "name": "lambda-spawn",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Run lambda function as child process",
   "author": "Kengo Nakatsuka <kengo.nakatsuka@gmail.com>",
   "bugs": {
