@@ -94,3 +94,23 @@ test('test options.lambdaEnv', t => {
     t.equal(result.env.foo, 'bar');
   });
 });
+
+test('test options.additionalNodePath', t => {
+  t.plan(1);
+
+  const options = {
+    dir: __dirname + '/lambda2',
+    additionalNodePath: __dirname + '/additional_node_modules',
+  };
+
+  const event = {
+    test: 'test',
+  };
+
+  const context = {
+  };
+
+  spawnLambda(options, event, context, (err, result) => {
+    t.error(err);
+  });
+});
