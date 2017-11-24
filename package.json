@@ -7,14 +7,14 @@
     "url": "https://github.com/nak2k/node-lambda-spawn/issues"
   },
   "dependencies": {
-    "debug": "^2.6.8",
+    "debug": "^3.1.0",
     "locate-path-cb": "0.0.1"
   },
   "devDependencies": {
-    "babel-preset-env": "^1.5.2",
-    "babel-register": "^6.24.1",
-    "eslint": "^4.1.1",
-    "tape": "^4.7.0"
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "eslint": "^4.11.0",
+    "tape": "^4.8.0"
   },
   "homepage": "https://github.com/nak2k/node-lambda-spawn",
   "keywords": [
