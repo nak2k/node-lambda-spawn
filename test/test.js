@@ -5,7 +5,7 @@ const {
 } = require('..');
 
 test('test', t => {
-  t.plan(8);
+  t.plan(10);
 
   const options = {
     arn: t.name,
@@ -34,9 +34,12 @@ test('test', t => {
 
       t.equal(typeof(result), 'object');
 
-      const { event } = result;
+      const { env, event } = result;
 
       t.deepEqual(event, { test: 'test' });
+
+      t.equal(env.LAMBDA_TASK_ROOT, __dirname + '/lambda');
+      t.equal(env.LAMBDA_RUNTIME_DIR, __dirname + '/lambda');
 
       lambdaProcess.kill();
     });
