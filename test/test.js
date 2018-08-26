@@ -5,7 +5,7 @@ const {
 } = require('..');
 
 test('test', t => {
-  t.plan(9);
+  t.plan(8);
 
   const options = {
     arn: t.name,
@@ -35,9 +35,8 @@ test('test', t => {
       t.equal(typeof(result), 'object');
 
       const { event } = result;
-      t.equal(typeof(event), 'object');
 
-      t.equal(event.test, 'test');
+      t.deepEqual(event, { test: 'test' });
 
       lambdaProcess.kill();
     });
