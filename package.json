@@ -13,7 +13,6 @@
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
-    "eslint": "^5.4.0",
     "tape": "^4.9.1"
   },
   "homepage": "https://github.com/nak2k/node-lambda-spawn",
@@ -28,7 +27,6 @@
     "url": "git+https://github.com/nak2k/node-lambda-spawn.git"
   },
   "scripts": {
-    "lint": "eslint lib",
     "prepublishOnly": "npm test",
     "postpublish": "npm-sns",
     "test": "tape test/test*.js"
