@@ -205,3 +205,34 @@ test('test options.additionalNodePath', t => {
     });
   });
 });
+
+test('test typescript-lambda', t => {
+  t.plan(3);
+
+  const options = {
+    arn: t.name,
+    dir: __dirname + '/typescript-lambda',
+    typescript: true,
+  };
+
+  const lambdaProcess = spawnLambda(options);
+
+  lambdaProcess.on(INIT_RESULT, ({ err }) => {
+    t.error(err);
+
+    const event = {
+      test: 'test',
+    };
+
+    const context = {
+    };
+
+    lambdaProcess.invoke(event, context, (err, result) => {
+      t.error(err);
+
+      t.equal(typeof(result), 'object');
+
+      lambdaProcess.kill();
+    });
+  });
+});

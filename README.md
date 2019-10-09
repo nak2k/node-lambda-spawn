@@ -50,6 +50,8 @@ lambdaProcess.on(INVOKE_RESULT, ({ result }) => {
   - This object is merged to `options.env`.
 - `options.moduleDir`
   - A path of a directory that the lambda function is located.
+- `options.typescript`
+  - If this option is truthy, `ts-node` is used to launch a lambda process.
 - `event`
   - An event object that is used to invoke the lambda function.
 - `context`
