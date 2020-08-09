@@ -4,6 +4,7 @@ import {
   INIT,
   INVOKE,
   INVOKE_RESULT,
+  DEFAULT_DRIVER_PATH,
 } from './constants';
 import { makeOnceCallback } from './makeOnceCallback';
 import { findAwsSdk } from './findAwsSdk';
@@ -37,7 +38,7 @@ const spawnLambda = (options: spawnLambdaOptions, event: any, context: any) => {
     handler = 'index.handler',
     region = process.env.AWS_REGION,
     command = typescript ? 'ts-node' : 'node',
-    args = [join(__dirname, 'driver.js')],
+    args = [DEFAULT_DRIVER_PATH],
     env,
     lambdaEnv,
     additionalNodePath,
