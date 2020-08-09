@@ -1,17 +1,32 @@
-const { spawn } = require('child_process');
-const { join } = require('path');
-const {
+import { spawn, ChildProcess } from 'child_process';
+import { join } from 'path';
+import {
   INIT,
-  INIT_RESULT,
   INVOKE,
   INVOKE_RESULT,
-} = require('./constants');
-const { makeOnceCallback } = require('./makeOnceCallback');
-const { findAwsSdk } = require('./findAwsSdk');
+} from './constants';
+import { makeOnceCallback } from './makeOnceCallback';
+import { findAwsSdk } from './findAwsSdk';
 
 const debug = require('debug')('lambda-spawn:spawnLambda');
 
-const spawnLambda = (options, event, context) => {
+interface spawnLambdaOptions {
+  typescript?: boolean;
+  arn?: string;
+  dir?: string;
+  handler?: string;
+  region?: string;
+  command?: string;
+  args?: string[];
+  env?: NodeJS.ProcessEnv;
+  lambdaEnv?: NodeJS.ProcessEnv;
+  additionalNodePath?: string;
+  stdio?: any;
+  babel?: boolean;
+  moduleDir?: string;
+}
+
+const spawnLambda = (options: spawnLambdaOptions, event: any, context: any) => {
   const {
     typescript,
   } = options;
@@ -91,7 +106,7 @@ const spawnLambda = (options, event, context) => {
   return lambdaProcess;
 }
 
-function spawnProcess(command, args, options) {
+function spawnProcess(command: string, args?: ReadonlyArray<string>, options?: any) {
   const process = spawn(command, args, options);
   process.msgId = 0;
 
@@ -111,20 +126,20 @@ function spawnProcess(command, args, options) {
     debug('Lambda process exited. code = %d, signal = %s', code, signal);
   });
 
-  process.on('message', function(message, sendHandle) {
+  process.on('message', function (this: ChildProcess, message: any, sendHandle) {
     debug('Lambda process returns a result %j', message);
 
     this.emit(message.type, message);
   });
 
-  process.invoke = function(event, context, callback) {
+  process.invoke = function (event, context, callback) {
     callback = makeOnceCallback(callback);
 
-    const invokeContext = {};
+    const invokeContext: any = {};
 
     invokeContext.msgId = ++this.msgId;
 
-    invokeContext.resultHandler = message => {
+    invokeContext.resultHandler = (message: any) => {
       if (message.msgId !== invokeContext.msgId) {
         return;
       }
@@ -134,7 +149,7 @@ function spawnProcess(command, args, options) {
       invokeContext.destroy();
     };
 
-    invokeContext.exitHandler = (code, signal) => {
+    invokeContext.exitHandler = (code: number, signal: string) => {
       callback(new Error(`Lambda process exited. code = ${code}, signal = ${signal}`));
 
       invokeContext.destroy();

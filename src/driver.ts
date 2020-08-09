@@ -1,9 +1,9 @@
-const {
+import {
   INIT,
   INIT_RESULT,
   INVOKE,
   INVOKE_RESULT,
-} = require('./constants');
+} from './constants';
 
 function main() {
   if (!process.connected) {
@@ -20,7 +20,7 @@ function main() {
     console.info('Lambda process exits with code %d', code);
   });
 
-  process.on('message', function(message, sendHandle) {
+  process.on('message', function (this: NodeJS.Process, message, sendHandle) {
     this.emit(message.type, message);
   });
 
@@ -28,7 +28,7 @@ function main() {
   process.on(INVOKE, invokeHandler);
 }
 
-function initHandler(message) {
+function initHandler(this: NodeJS.Process, message: any) {
   const {
     region,
     awsSdkPath,
@@ -74,24 +74,24 @@ function initHandler(message) {
 
   this.lambdaHandler = lambdaHandler;
 
-  this.send({
+  this.send!({
     type: INIT_RESULT,
     err: null,
   });
 }
 
-function invokeHandler(message) {
+function invokeHandler(this: NodeJS.Process, message: any) {
   const {
     event,
     context,
   } = message;
 
-  this.lambdaHandler(event, context, (err, result) =>
-    this.send(setError({
+  this.lambdaHandler(event, context, (err: Error | null, result?: any) =>
+    this.send!(setError({
       type: INVOKE_RESULT,
       msgId: message.msgId,
       result,
-    }, err), err => {
+    }, err), (err: Error) => {
       if (err) {
         this.disconnect();
       }
@@ -102,14 +102,14 @@ function invokeHandler(message) {
 /*
  * Send a message and disconnect regardless of success or failure.
  */
-function sendLastMessage(process, message) {
-  process.send(message, err => process.disconnect());
+function sendLastMessage(process: NodeJS.Process, message: any) {
+  process.send!(message, (err: Error) => process.disconnect());
 }
 
-function setError(obj, err) {
+function setError(obj: any, err?: Error | null) {
   if (err) {
     obj.err = {
-      code: err.code,
+      code: (err as any).code,
       message: err.message,
       stack: err.stack,
     }
