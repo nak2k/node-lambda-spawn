@@ -27,7 +27,7 @@ interface spawnLambdaOptions {
   moduleDir?: string;
 }
 
-const spawnLambda = (options: spawnLambdaOptions, event: any, context: any) => {
+export function spawnLambda(options: spawnLambdaOptions, event: any, context: any) {
   const {
     typescript,
   } = options;
@@ -186,8 +186,3 @@ function spawnProcess(command: string, args?: ReadonlyArray<string>, options?: a
 
   return process;
 }
-
-/**
- * Exports.
- */
-exports.spawnLambda = spawnLambda;
