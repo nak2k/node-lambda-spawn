@@ -11,6 +11,13 @@ import { findAwsSdk } from './findAwsSdk';
 
 const debug = require('debug')('lambda-spawn:spawnLambda');
 
+export interface LambdaProcess extends ChildProcess {
+  arn?: string;
+  _msgId: number;
+
+  invoke(event: any, context: any, callback: (err: Error | null, result?: any) => void): void;
+}
+
 interface spawnLambdaOptions {
   typescript?: boolean;
   arn?: string;
@@ -108,8 +115,8 @@ export function spawnLambda(options: spawnLambdaOptions, event: any, context: an
 }
 
 function spawnProcess(command: string, args?: ReadonlyArray<string>, options?: any) {
-  const process = spawn(command, args, options);
-  process.msgId = 0;
+  const process = spawn(command, args, options) as LambdaProcess;
+  process._msgId = 0;
 
   process.on('close', (code, signal) => {
     debug('Lambda process closed. code = %d, signal = %s', code, signal);
@@ -138,7 +145,7 @@ function spawnProcess(command: string, args?: ReadonlyArray<string>, options?: a
 
     const invokeContext: any = {};
 
-    invokeContext.msgId = ++this.msgId;
+    invokeContext.msgId = ++this._msgId;
 
     invokeContext.resultHandler = (message: any) => {
       if (message.msgId !== invokeContext.msgId) {
