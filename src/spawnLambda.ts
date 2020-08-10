@@ -19,18 +19,55 @@ export interface LambdaProcess extends ChildProcess {
 }
 
 interface spawnLambdaOptions {
+  /**
+   * If this option is truthy, `ts-node` is used to launch a lambda process.
+   */
   typescript?: boolean;
+
+  /**
+   * An ARN that identify a lambda process.
+   */
   arn?: string;
+
+  /**
+   * A current directory of the lambda process. (Default: `process.cwd()`)
+   */
   dir?: string;
+
+  /**
+   * Names of a module and a function. (Default: `index.handler`)
+   */
   handler?: string;
+
+  /**
+   * A region that is used to initialize `aws-sdk` in a lambda process. (Default: `process.env.AWS_REGION`)
+   */
   region?: string;
+
   command?: string;
+
   args?: string[];
+
+  /**
+   * An object of environment variables that is used to launch a lambda process. (Default: `process.env`)
+   */
   env?: NodeJS.ProcessEnv;
+
+  /**
+   * An object of environment variables that is used as the lambda configuration.
+   * This object is merged to `env`.
+   */
   lambdaEnv?: NodeJS.ProcessEnv;
+
   additionalNodePath?: string;
+
   stdio?: any;
+
   babel?: boolean;
+
+  /**
+   * A path of a directory that the lambda function is located.
+   */
   moduleDir?: string;
 }
 
