@@ -69,6 +69,8 @@ interface spawnLambdaOptions {
    * A path of a directory that the lambda function is located.
    */
   moduleDir?: string;
+
+  project?: string;
 }
 
 export function spawnLambda(options: spawnLambdaOptions) {
@@ -88,6 +90,7 @@ export function spawnLambda(options: spawnLambdaOptions) {
     additionalNodePath,
     stdio = ['ignore', 'inherit', 'inherit'],
     babel,
+    project,
   } = options;
 
   const {
@@ -98,6 +101,10 @@ export function spawnLambda(options: spawnLambdaOptions) {
 
   if (babel) {
     args.unshift('-r', 'babel-register');
+  }
+
+  if (project) {
+    args.unshift('-P', project);
   }
 
   const mergedEnv = Object.assign({}, env || process.env, lambdaEnv);
