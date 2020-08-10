@@ -34,7 +34,7 @@ interface spawnLambdaOptions {
   moduleDir?: string;
 }
 
-export function spawnLambda(options: spawnLambdaOptions, event: any, context: any) {
+export function spawnLambda(options: spawnLambdaOptions) {
   const {
     typescript,
   } = options;
