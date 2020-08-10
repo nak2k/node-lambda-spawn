@@ -1,5 +1,5 @@
 import { spawn, ChildProcess } from 'child_process';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import {
   INIT,
   INVOKE,
@@ -143,7 +143,7 @@ export function spawnLambda(options: spawnLambdaOptions) {
       region,
       awsSdkPath,
       arn,
-      module: join(moduleDir, moduleBasename + (typescript ? '.ts' : '.js')),
+      module: join(resolve(moduleDir), moduleBasename + (typescript ? '.ts' : '.js')),
       handlerName,
     });
   });
