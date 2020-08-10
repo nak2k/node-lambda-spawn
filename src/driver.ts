@@ -5,6 +5,10 @@ import {
   INVOKE_RESULT,
 } from './constants';
 
+interface ProcessWithLambdaHandler extends NodeJS.Process {
+  lambdaHandler(event: any, context: any, callback: (err: Error | null, result?: any) => void): void;
+}
+
 function main() {
   if (!process.connected) {
     console.error('IPC channel not exists.');
@@ -28,7 +32,7 @@ function main() {
   process.on(INVOKE, invokeHandler);
 }
 
-function initHandler(this: NodeJS.Process, message: any) {
+function initHandler(this: ProcessWithLambdaHandler, message: any) {
   const {
     region,
     awsSdkPath,
@@ -80,7 +84,7 @@ function initHandler(this: NodeJS.Process, message: any) {
   });
 }
 
-function invokeHandler(this: NodeJS.Process, message: any) {
+function invokeHandler(this: ProcessWithLambdaHandler, message: any) {
   const {
     event,
     context,
