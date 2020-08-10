@@ -6,6 +6,7 @@ import {
 } from './constants';
 
 interface ProcessWithLambdaHandler extends NodeJS.Process {
+  lambdaHandler(event: any, context: any): Promise<any>;
   lambdaHandler(event: any, context: any, callback: (err: Error | null, result?: any) => void): void;
 }
 
@@ -90,17 +91,42 @@ function invokeHandler(this: ProcessWithLambdaHandler, message: any) {
     context,
   } = message;
 
-  this.lambdaHandler(event, context, (err: Error | null, result?: any) =>
-    this.send!(setError({
-      type: INVOKE_RESULT,
-      msgId: message.msgId,
-      result,
-    }, err), (err: Error) => {
-      if (err) {
-        this.disconnect();
-      }
-    })
-  );
+  if (this.lambdaHandler.length === 3) {
+    this.lambdaHandler(event, context, (err: Error | null, result?: any) =>
+      this.send!(setError({
+        type: INVOKE_RESULT,
+        msgId: message.msgId,
+        result,
+      }, err), (err: Error) => {
+        if (err) {
+          this.disconnect();
+        }
+      })
+    );
+  } else {
+    this.lambdaHandler(event, context)
+      .then(result => {
+        this.send!({
+          type: INVOKE_RESULT,
+          msgId: message.msgId,
+          result,
+        }, (err: Error) => {
+          if (err) {
+            this.disconnect();
+          }
+        });
+      })
+      .catch(err => {
+        this.send!(setError({
+          type: INVOKE_RESULT,
+          msgId: message.msgId,
+        }, err), (err: Error) => {
+          if (err) {
+            this.disconnect();
+          }
+        })
+      });
+  }
 }
 
 /*
