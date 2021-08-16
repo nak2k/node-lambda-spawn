@@ -129,7 +129,7 @@ function invokeHandler(this: ProcessWithLambdaHandler, message: any) {
   }
 }
 
-/*
+/**
  * Send a message and disconnect regardless of success or failure.
  */
 function sendLastMessage(process: NodeJS.Process, message: any) {

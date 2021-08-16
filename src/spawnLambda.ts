@@ -18,7 +18,7 @@ export interface LambdaProcess extends ChildProcess {
   invoke(event: any, context: any, callback: (err: Error | null, result?: any) => void): void;
 }
 
-interface spawnLambdaOptions {
+export interface SpawnLambdaOptions {
   /**
    * If this option is truthy, `ts-node` is used to launch a lambda process.
    */
@@ -73,7 +73,7 @@ interface spawnLambdaOptions {
   project?: string;
 }
 
-export function spawnLambda(options: spawnLambdaOptions) {
+export function spawnLambda(options: SpawnLambdaOptions) {
   const {
     typescript,
   } = options;
