@@ -71,6 +71,8 @@ export interface SpawnLambdaOptions {
   moduleDir?: string;
 
   project?: string;
+
+  roleArn?: string;
 }
 
 export function spawnLambda(options: SpawnLambdaOptions) {
@@ -91,6 +93,7 @@ export function spawnLambda(options: SpawnLambdaOptions) {
     stdio = ['ignore', 'inherit', 'inherit'],
     babel,
     project,
+    roleArn,
   } = options;
 
   const {
@@ -152,6 +155,7 @@ export function spawnLambda(options: SpawnLambdaOptions) {
       arn,
       module: join(resolve(moduleDir), moduleBasename + (typescript ? '.ts' : '.js')),
       handlerName,
+      roleArn,
     });
   });
 

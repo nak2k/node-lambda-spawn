@@ -40,6 +40,7 @@ function initHandler(this: ProcessWithLambdaHandler, message: any) {
     arn,
     module,
     handlerName,
+    roleArn,
   } = message;
 
   if (arn) {
@@ -54,6 +55,12 @@ function initHandler(this: ProcessWithLambdaHandler, message: any) {
       AWS.config.update({
         region,
       });
+
+      if (roleArn) {
+        AWS.config.credentials = new AWS.ChainableTemporaryCredentials({
+          params: { RoleArn: roleArn },
+        });
+      }
     } catch (err) {
       sendLastMessage(this, setError({ type: INIT_RESULT }, err));
       return;
