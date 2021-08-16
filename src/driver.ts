@@ -25,7 +25,7 @@ function main() {
     console.info('Lambda process exits with code %d', code);
   });
 
-  process.on('message', function (this: NodeJS.Process, message, sendHandle) {
+  process.on('message', function (this: NodeJS.Process, message: any, sendHandle) {
     this.emit(message.type, message);
   });
 
