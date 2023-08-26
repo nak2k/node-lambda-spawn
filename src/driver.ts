@@ -35,36 +35,13 @@ function main() {
 
 function initHandler(this: ProcessWithLambdaHandler, message: any) {
   const {
-    region,
-    awsSdkPath,
     arn,
     module,
     handlerName,
-    roleArn,
   } = message;
 
   if (arn) {
     process.title = arn;
-  }
-
-  console.info('aws-sdk: %s', awsSdkPath);
-
-  if (awsSdkPath) {
-    try {
-      const AWS = require(awsSdkPath);
-      AWS.config.update({
-        region,
-      });
-
-      if (roleArn) {
-        AWS.config.credentials = new AWS.ChainableTemporaryCredentials({
-          params: { RoleArn: roleArn },
-        });
-      }
-    } catch (err: any) {
-      sendLastMessage(this, setError({ type: INIT_RESULT }, err));
-      return;
-    }
   }
 
   let lambdaModule;

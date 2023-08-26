@@ -7,8 +7,7 @@
     "url": "https://github.com/nak2k/node-lambda-spawn/issues"
   },
   "dependencies": {
-    "debug": "^4.3.2",
-    "locate-path-cb": "0.0.1"
+    "debug": "^4.3.2"
   },
   "devDependencies": {
     "@types/node": "^16.6.1",

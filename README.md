@@ -39,9 +39,6 @@ lambdaProcess.on(INVOKE_RESULT, ({ result }) => {
 - `options.handler`
   - Names of a module and a function.
   - Default: `index.handler`
-- `options.region`
-  - A region that is used to initialize `aws-sdk` in a lambda process.
-  - Default: `process.env.AWS_REGION`
 - `options.env`
   - An object of environment variables that is used to launch a lambda process.
   - Default: `process.env`

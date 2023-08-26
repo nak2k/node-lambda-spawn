@@ -7,7 +7,6 @@ import {
   DEFAULT_DRIVER_PATH,
 } from './constants';
 import { makeOnceCallback } from './makeOnceCallback';
-import { findAwsSdk } from './findAwsSdk';
 
 const debug = require('debug')('lambda-spawn:spawnLambda');
 
@@ -39,11 +38,6 @@ export interface SpawnLambdaOptions {
    */
   handler?: string;
 
-  /**
-   * A region that is used to initialize `aws-sdk` in a lambda process. (Default: `process.env.AWS_REGION`)
-   */
-  region?: string;
-
   command?: string;
 
   args?: string[];
@@ -69,8 +63,6 @@ export interface SpawnLambdaOptions {
   moduleDir?: string;
 
   project?: string;
-
-  roleArn?: string;
 }
 
 export function spawnLambda(options: SpawnLambdaOptions) {
@@ -82,7 +74,6 @@ export function spawnLambda(options: SpawnLambdaOptions) {
     arn,
     dir = process.cwd(),
     handler = 'index.handler',
-    region = process.env.AWS_REGION,
     command = typescript ? 'ts-node' : 'node',
     args = [DEFAULT_DRIVER_PATH],
     env,
@@ -90,7 +81,6 @@ export function spawnLambda(options: SpawnLambdaOptions) {
     additionalNodePath,
     stdio = ['ignore', 'inherit', 'inherit'],
     project,
-    roleArn,
   } = options;
 
   const {
@@ -127,29 +117,13 @@ export function spawnLambda(options: SpawnLambdaOptions) {
   const lambdaProcess = spawnProcess(command, args, spawnOptions);
   lambdaProcess.arn = arn;
 
-  findAwsSdk({
-    basedir: moduleDir,
-    NODE_PATH: spawnOptions.env && spawnOptions.env.NODE_PATH,
-  }, (err, awsSdkPath) => {
-    if (!awsSdkPath) {
-      try {
-        awsSdkPath = require.resolve('aws-sdk');
-      } catch (err) {
-        // Ignore error.
-      }
-    }
+  const [moduleBasename, handlerName] = handler.split('.');
 
-    const [moduleBasename, handlerName] = handler.split('.');
-
-    lambdaProcess.send({
-      type: INIT,
-      region,
-      awsSdkPath,
-      arn,
-      module: join(resolve(moduleDir), moduleBasename + (typescript ? '.ts' : '.js')),
-      handlerName,
-      roleArn,
-    });
+  lambdaProcess.send({
+    type: INIT,
+    arn,
+    module: join(resolve(moduleDir), moduleBasename + (typescript ? '.ts' : '.js')),
+    handlerName,
   });
 
   return lambdaProcess;
