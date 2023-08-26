@@ -14,7 +14,7 @@ test('test', t => {
 
   const lambdaProcess = spawnLambda(options);
 
-  t.equal(typeof(lambdaProcess), 'object');
+  t.equal(typeof lambdaProcess, 'object');
   t.equal(lambdaProcess.stdin, null);
   t.equal(lambdaProcess.stdout, null);
   t.equal(lambdaProcess.stderr, null);
@@ -32,7 +32,7 @@ test('test', t => {
     lambdaProcess.invoke(event, context, (err, result) => {
       t.error(err);
 
-      t.equal(typeof(result), 'object');
+      t.equal(typeof result, 'object');
 
       const { env, event } = result;
 
@@ -57,7 +57,7 @@ test('test options.stdio', t => {
 
   const lambdaProcess = spawnLambda(options);
 
-  t.equal(typeof(lambdaProcess), 'object');
+  t.equal(typeof lambdaProcess, 'object');
   t.equal(lambdaProcess.stdin, null);
   t.notEqual(lambdaProcess.stdout, null);
   t.notEqual(lambdaProcess.stderr, null);
@@ -75,7 +75,7 @@ test('test options.stdio', t => {
     lambdaProcess.invoke(event, context, (err, result) => {
       t.error(err);
 
-      t.equal(typeof(result), 'object');
+      t.equal(typeof (result), 'object');
 
       lambdaProcess.kill();
     });
@@ -106,38 +106,7 @@ test('test options.moduleDir', t => {
     lambdaProcess.invoke(event, context, (err, result) => {
       t.error(err);
 
-      t.equal(typeof(result), 'object');
-
-      lambdaProcess.kill();
-    });
-  });
-});
-
-test('test options.babel', t => {
-  t.plan(3);
-
-  const options = {
-    arn: t.name,
-    dir: __dirname + '/babel-lambda',
-    babel: true,
-  };
-
-  const lambdaProcess = spawnLambda(options);
-
-  lambdaProcess.on(INIT_RESULT, ({ err }) => {
-    t.error(err);
-
-    const event = {
-      test: 'test',
-    };
-
-    const context = {
-    };
-
-    lambdaProcess.invoke(event, context, (err, result) => {
-      t.error(err);
-
-      t.equal(typeof(result), 'object');
+      t.equal(typeof result, 'object');
 
       lambdaProcess.kill();
     });
@@ -230,7 +199,7 @@ test('test typescript-lambda', t => {
     lambdaProcess.invoke(event, context, (err, result) => {
       t.error(err);
 
-      t.equal(typeof(result), 'object');
+      t.equal(typeof (result), 'object');
 
       lambdaProcess.kill();
     });

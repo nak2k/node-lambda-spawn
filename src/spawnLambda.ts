@@ -63,8 +63,6 @@ export interface SpawnLambdaOptions {
 
   stdio?: any;
 
-  babel?: boolean;
-
   /**
    * A path of a directory that the lambda function is located.
    */
@@ -91,7 +89,6 @@ export function spawnLambda(options: SpawnLambdaOptions) {
     lambdaEnv,
     additionalNodePath,
     stdio = ['ignore', 'inherit', 'inherit'],
-    babel,
     project,
     roleArn,
   } = options;
@@ -101,10 +98,6 @@ export function spawnLambda(options: SpawnLambdaOptions) {
   } = options;
 
   const [, stdout = 'inherit', stderr = 'inherit'] = stdio;
-
-  if (babel) {
-    args.unshift('-r', 'babel-register');
-  }
 
   if (project) {
     args.unshift('-P', project);

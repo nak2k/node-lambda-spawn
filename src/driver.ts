@@ -61,7 +61,7 @@ function initHandler(this: ProcessWithLambdaHandler, message: any) {
           params: { RoleArn: roleArn },
         });
       }
-    } catch (err) {
+    } catch (err: any) {
       sendLastMessage(this, setError({ type: INIT_RESULT }, err));
       return;
     }
@@ -71,7 +71,7 @@ function initHandler(this: ProcessWithLambdaHandler, message: any) {
 
   try {
     lambdaModule = require(module);
-  } catch (err) {
+  } catch (err: any) {
     sendLastMessage(this, setError({ type: INIT_RESULT }, err));
     return;
   }
